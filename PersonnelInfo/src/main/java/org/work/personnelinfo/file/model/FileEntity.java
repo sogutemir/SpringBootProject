@@ -4,6 +4,7 @@ package org.work.personnelinfo.file.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.work.personnelinfo.base.model.BaseEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 
 import java.time.LocalDateTime;
@@ -14,11 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "personel_file")
-public class FileEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class FileEntity extends BaseEntity {
 
     @NotBlank(message = "File type cannot be empty")
     @Column(name = "file_type")

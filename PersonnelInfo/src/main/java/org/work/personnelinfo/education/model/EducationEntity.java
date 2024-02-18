@@ -13,11 +13,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "personel_education")
-public class EducationEntity {
+public class EducationEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

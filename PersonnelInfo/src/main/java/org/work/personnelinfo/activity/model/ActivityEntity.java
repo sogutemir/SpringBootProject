@@ -3,6 +3,7 @@ package org.work.personnelinfo.activity.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.work.personnelinfo.base.model.BaseEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 
 import java.time.LocalDate;
@@ -11,15 +12,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "personel_activity")
-public class ActivityEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ActivityEntity extends BaseEntity {
 
     @NotEmpty(message = "Event type cannot be empty")
     @Size(max = 50, message = "Event type must be maximum 50 characters")

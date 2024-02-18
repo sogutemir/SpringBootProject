@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.work.personnelinfo.activity.model.ActivityEntity;
+import org.work.personnelinfo.base.model.BaseEntity;
 import org.work.personnelinfo.education.model.EducationEntity;
 import org.work.personnelinfo.file.model.FileEntity;
+import org.work.personnelinfo.personel.validation.ValidTCIDNo;
 import org.work.personnelinfo.project.model.ProjectEntity;
 
 import java.time.LocalDate;
@@ -14,15 +16,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "personel")
-public class PersonelEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class PersonelEntity extends BaseEntity {
 
     @NotBlank(message = "Name cannot be left blank")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
@@ -37,7 +34,7 @@ public class PersonelEntity {
     @NotBlank(message = "Identity Number cannot be left blank")
     @Size(min = 11, max = 11, message = "Identity Number must be 11 characters")
     @Column(name = "identity_number")
-// @ValidIdentityNumber
+    @ValidTCIDNo
     private String identityNumber;
 
     @Size(max = 50, message = "Academic Title must be a maximum of 50 characters")
@@ -110,22 +107,16 @@ public class PersonelEntity {
     private String roomNumber;
 
     @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EducationEntity> egitimler;
+    private List<EducationEntity> personel_education;
 
     @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectEntity> projeler;
+    private List<ProjectEntity> personel_project;
 
     @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ActivityEntity> etkinlikler;
+    private List<ActivityEntity> personel_activity;
 
     @OneToMany(mappedBy = "personel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FileEntity> dosyalar;
-
-
-//    @Lob
-//    @Column(name = "personel_foto")
-//    private byte[] fotograf;
-
+    private List<FileEntity> personel_file;
 
 
 }

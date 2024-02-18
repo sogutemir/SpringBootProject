@@ -36,8 +36,8 @@ public class ProjectEntity {
     @Column(name = "project_start_date")
     private LocalDate projectStartDate;
 
-    @Column(name = "project_continues")
-    private Boolean projectContinues;
+    @Column(name = "project_status")
+    private Boolean projectStatus;
 
     @PastOrPresent(message = "Project end date must be today or in the past")
     @Column(name = "project_finish_date")
