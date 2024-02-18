@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.work.personnelinfo.personel.dto.PersonelDTO;
+import org.work.personnelinfo.personel.mapper.PersonelMapper;
 import org.work.personnelinfo.personel.repository.PersonelRepository;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.resourcefile.service.ResourceFileService;
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class PersonelService {
 
     private final PersonelRepository personelRepository;
-    private final ModelMapper modelMapper;
+    private final PersonelMapper personelMapper;
     private final ResourceFileService resourceFileService;
 
 
@@ -26,7 +27,8 @@ public class PersonelService {
         if (personelDTO == null) {
             throw new IllegalArgumentException("PersonelDTO cannot be null");
         }
-        PersonelEntity personelEntity = modelMapper.map(personelDTO, PersonelEntity.class);
+
+        PersonelEntity personelEntity = personelMapper.dtoToModel(personelDTO);
 
         personelEntity = personelRepository.save(personelEntity);
 
@@ -34,7 +36,7 @@ public class PersonelService {
             resourceFileService.uploadFile(file, personelEntity);
         }
 
-        return modelMapper.map(personelEntity, PersonelDTO.class);
+        return personelMapper.modelToDTO(personelEntity);
     }
 
 
