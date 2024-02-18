@@ -1,4 +1,7 @@
 package org.work.personnelinfo.education.repository;
 
-public interface EducationRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.work.personnelinfo.education.model.EducationEntity;
+
+public interface EducationRepository extends JpaRepository<EducationEntity, Long> {
 }

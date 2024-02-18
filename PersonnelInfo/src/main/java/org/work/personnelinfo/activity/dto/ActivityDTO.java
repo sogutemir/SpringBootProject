@@ -6,14 +6,14 @@ import java.time.LocalDate;
 
 
 import lombok.*;
-import org.work.personnelinfo.base.dto.BaseDTO;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActivityDTO extends BaseDTO {
+public class ActivityDTO  {
 
+    private Long id;
     private String activityName;
     private String description;
     private String link;

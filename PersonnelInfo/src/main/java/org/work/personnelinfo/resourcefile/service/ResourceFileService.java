@@ -1,8 +1,10 @@
 package org.work.personnelinfo.resourcefile.service;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.work.personnelinfo.activity.model.ActivityEntity;
 import org.work.personnelinfo.base.model.BaseEntity;
@@ -16,12 +18,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
-
 @Service
 @RequiredArgsConstructor
 public class ResourceFileService {
 
     private final ResourceFileRepository fileRepository;
+    private final ModelMapper modelMapper;
 
     @Transactional
     public String uploadFile(MultipartFile file, BaseEntity entity) throws IOException {
@@ -29,36 +31,26 @@ public class ResourceFileService {
             throw new IllegalArgumentException("Entity cannot be null");
         }
 
-        String fileName = file.getOriginalFilename();
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("File is empty");
+        }
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String contentType = file.getContentType();
         byte[] compressedData = ResourceFileUtils.compressBytes(file.getBytes());
 
-        ResourceFileEntity resourceFileData = ResourceFileEntity.builder()
+        ResourceFileEntity fileEntity = ResourceFileEntity.builder()
                 .name(fileName)
                 .type(contentType)
                 .data(compressedData)
                 .build();
 
-        switch (entity.getClass().getSimpleName()) {
-            case "PersonelEntity":
-                PersonelEntity personelEntity = (PersonelEntity) entity;
-                resourceFileData.setPersonel(personelEntity);
-                break;
-            case "FileEntity":
-                FileEntity fileEntity = (FileEntity) entity;
-                resourceFileData.setFile(fileEntity);
-                break;
-            case "ActivityEntity":
-                ActivityEntity activityEntity = (ActivityEntity) entity;
-                resourceFileData.setActivity(activityEntity);
-                break;
-            default:
-                throw new IllegalArgumentException("Entity type not supported");
-        }
+        // Entity ile ilişkili alanları set edin
+        associateEntityWithFile(entity, fileEntity);
 
-        entity.setResourceFile(resourceFileData);
+        // Veritabanına kaydet
+        ResourceFileEntity savedFile = fileRepository.save(fileEntity);
 
-        FileEntity savedFile = fileRepository.save(resourceFileData).getFile();
         if (savedFile != null) {
             return "Saved file in DB with name: " + fileName;
         } else {
@@ -70,10 +62,30 @@ public class ResourceFileService {
     public byte[] downloadFile(Long fileId) throws FileNotFoundException {
         Optional<ResourceFileEntity> retrievedFile = fileRepository.findById(fileId);
 
-        if (retrievedFile.isPresent()) {
-            return ResourceFileUtils.decompressBytes(retrievedFile.get().getData());
-        } else {
-            throw new FileNotFoundException("File not found with name: " + retrievedFile.get().getName());
+        if (!retrievedFile.isPresent()) {
+            throw new FileNotFoundException("File not found with id: " + fileId);
+        }
+
+        return ResourceFileUtils.decompressBytes(retrievedFile.get().getData());
+    }
+
+    private void associateEntityWithFile(BaseEntity entity, ResourceFileEntity fileEntity) {
+        switch (entity.getClass().getSimpleName()) {
+            case "PersonelEntity":
+                PersonelEntity personelEntity = (PersonelEntity) entity;
+                personelEntity.setResourceFile(fileEntity);
+                break;
+            case "FileEntity":
+                FileEntity fileEntity1 = (FileEntity) entity;
+                fileEntity1.setResourceFile(fileEntity);
+                break;
+            case "ActivityEntity":
+                ActivityEntity activityEntity = (ActivityEntity) entity;
+                activityEntity.setResourceFile(fileEntity);
+                break;
+            default:
+                throw new IllegalArgumentException("Entity type not supported");
         }
     }
 }
+

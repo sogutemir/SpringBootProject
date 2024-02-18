@@ -1,4 +1,7 @@
 package org.work.personnelinfo.experience.repository;
 
-public interface ExperienceRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.work.personnelinfo.experience.model.ExperienceEntity;
+
+public interface ExperienceRepository extends JpaRepository<ExperienceEntity, Long> {
 }

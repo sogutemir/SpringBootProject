@@ -2,14 +2,14 @@ package org.work.personnelinfo.personel.dto;
 
 import java.time.LocalDate;
 import lombok.*;
-import org.work.personnelinfo.base.dto.BaseDTO;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonelDTO extends BaseDTO {
+public class PersonelDTO  {
 
+    private Long id;
     private String name;
     private String surname;
     private String identityNumber;
@@ -21,7 +21,7 @@ public class PersonelDTO extends BaseDTO {
     private String emergencyContactPhone;
     private String residenceAddress;
     private LocalDate employmentStartDate;
-    private String registrationNumber;
+    private String registrationNo;
     private String position;
     private String title;
     private String unit;
@@ -31,7 +31,6 @@ public class PersonelDTO extends BaseDTO {
     private String serviceUsage;
     private String internalNumber;
     private String roomNumber;
-    private String photoBase64;
 
 
 }
