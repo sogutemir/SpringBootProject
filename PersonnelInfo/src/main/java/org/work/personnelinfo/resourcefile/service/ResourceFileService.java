@@ -1,7 +1,7 @@
 package org.work.personnelinfo.resourcefile.service;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -10,20 +10,19 @@ import org.work.personnelinfo.activity.model.ActivityEntity;
 import org.work.personnelinfo.base.model.BaseEntity;
 import org.work.personnelinfo.file.model.FileEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
+import org.work.personnelinfo.resourcefile.dto.ResourceFileDTO;
 import org.work.personnelinfo.resourcefile.model.ResourceFileEntity;
 import org.work.personnelinfo.resourcefile.repository.ResourceFileRepository;
 import org.work.personnelinfo.resourcefile.utility.ResourceFileUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ResourceFileService {
 
     private final ResourceFileRepository fileRepository;
-    private final ModelMapper modelMapper;
 
     @Transactional
     public String uploadFile(MultipartFile file, BaseEntity entity) throws IOException {
@@ -45,10 +44,8 @@ public class ResourceFileService {
                 .data(compressedData)
                 .build();
 
-        // Entity ile ilişkili alanları set edin
         associateEntityWithFile(entity, fileEntity);
 
-        // Veritabanına kaydet
         ResourceFileEntity savedFile = fileRepository.save(fileEntity);
 
         if (savedFile != null) {
@@ -59,14 +56,22 @@ public class ResourceFileService {
     }
 
     @Transactional(readOnly = true)
-    public byte[] downloadFile(Long fileId) throws FileNotFoundException {
-        Optional<ResourceFileEntity> retrievedFile = fileRepository.findById(fileId);
+    public String getFileName(Long fileId) throws FileNotFoundException {
+        return fileRepository.findById(fileId)
+                .map(ResourceFileEntity::getName)
+                .orElseThrow(() -> new FileNotFoundException("File not found with id: " + fileId));
+    }
 
-        if (!retrievedFile.isPresent()) {
-            throw new FileNotFoundException("File not found with id: " + fileId);
-        }
 
-        return ResourceFileUtils.decompressBytes(retrievedFile.get().getData());
+    @Transactional(readOnly = true)
+    public ResourceFileDTO downloadFile(Long fileId) throws FileNotFoundException {
+        ResourceFileEntity retrievedFile = fileRepository.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException("File not found with id: " + fileId));
+
+        byte[] decompressedData = ResourceFileUtils.decompressBytes(retrievedFile.getData());
+        String fileName = retrievedFile.getName();
+
+        return new ResourceFileDTO(decompressedData, fileName);
     }
 
     private void associateEntityWithFile(BaseEntity entity, ResourceFileEntity fileEntity) {
@@ -87,5 +92,33 @@ public class ResourceFileService {
                 throw new IllegalArgumentException("Entity type not supported");
         }
     }
+
+    @Transactional
+    public void deleteFile(Long fileId) throws FileNotFoundException {
+        ResourceFileEntity file = fileRepository.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException("File not found with id: " + fileId));
+        try {
+            fileRepository.delete(file);
+        } catch (Exception e) {
+            throw new ServiceException("Error occurred while deleting the file with id: " + fileId, e);
+        }
+
+    }
+
+
 }
+
+//
+//    @Transactional(readOnly = true)
+//    public byte[] downloadFile(Long fileId) throws FileNotFoundException {
+//        Optional<ResourceFileEntity> retrievedFile = fileRepository.findById(fileId);
+//
+//        if (!retrievedFile.isPresent()) {
+//            throw new FileNotFoundException("File not found with id: " + fileId);
+//        }
+//
+//        return ResourceFileUtils.decompressBytes(retrievedFile.get().getData());
+//    }
+//
+//
 

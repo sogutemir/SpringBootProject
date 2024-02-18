@@ -1,5 +1,6 @@
 package org.work.personnelinfo.personel.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,10 @@ import org.work.personnelinfo.personel.mapper.PersonelMapper;
 import org.work.personnelinfo.personel.repository.PersonelRepository;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.resourcefile.service.ResourceFileService;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,12 @@ public class PersonelService {
     private final PersonelMapper personelMapper;
     private final ResourceFileService resourceFileService;
 
+    @Transactional(readOnly = true)
+    public PersonelDTO getPersonelById(Long id) {
+        return personelRepository.findById(id)
+                .map(personelMapper::modelToDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Personel not found with id: " + id));
+    }
 
 
     @Transactional
@@ -38,6 +48,38 @@ public class PersonelService {
 
         return personelMapper.modelToDTO(personelEntity);
     }
+
+    @Transactional
+    public PersonelDTO updatePersonel(Long personelId, PersonelDTO personelDTO, MultipartFile file) throws IOException {
+        PersonelEntity existingPersonelEntity = personelRepository.findById(personelId)
+                .orElseThrow(() -> new EntityNotFoundException("Personel not found with id: " + personelId));
+
+        personelMapper.updateModel(personelDTO, existingPersonelEntity);
+
+        if (file != null && !file.isEmpty()) {
+            if (existingPersonelEntity.getResourceFile() != null) {
+                resourceFileService.deleteFile(existingPersonelEntity.getResourceFile().getId());
+            }
+            resourceFileService.uploadFile(file, existingPersonelEntity);
+        }
+
+        PersonelEntity updatedPersonelEntity = personelRepository.save(existingPersonelEntity);
+
+        return personelMapper.modelToDTO(updatedPersonelEntity);
+    }
+
+    @Transactional
+    public void deletePersonel(Long personelId) throws FileNotFoundException {
+        PersonelEntity personelEntity = personelRepository.findById(personelId)
+                .orElseThrow(() -> new EntityNotFoundException("Personel not found with id: " + personelId));
+
+        if (personelEntity.getResourceFile() != null) {
+            resourceFileService.deleteFile(personelEntity.getResourceFile().getId());
+        }
+
+        personelRepository.delete(personelEntity);
+    }
+
 
 
 }
