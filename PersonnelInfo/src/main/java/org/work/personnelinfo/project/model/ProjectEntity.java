@@ -42,7 +42,7 @@ public class ProjectEntity {
 
     @PastOrPresent(message = "Project end date must be today or in the past")
     @Column(name = "project_finish_date")
-    private LocalDate projectfinishDate;
+    private LocalDate projectFinishDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personel_id", nullable = false)

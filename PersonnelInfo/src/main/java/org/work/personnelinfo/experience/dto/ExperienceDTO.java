@@ -15,8 +15,8 @@ public class ExperienceDTO {
     private Long id;
     private String institutionName;
     private String workType;
-    private LocalDate workStartDate;
-    private LocalDate workEndDate;
+    private LocalDate jobStartDate;
+    private LocalDate jobEndDate;
     private String workPosition;
     private String workDescription;
 

@@ -27,8 +27,8 @@ public class ExperienceEntity {
     private String institutionName;
 
     @NotEmpty(message = "Working Format Cannot Be Empty")
-    @Column(name = "working_format")
-    private String workingFormat;
+    @Column(name = "work_type")
+    private String workType;
 
     @Past(message = "Job start date must be in the past")
     @Column(name = "job_start_date")
@@ -38,11 +38,11 @@ public class ExperienceEntity {
     @Column(name = "job_end_date")
     private LocalDate jobEndDate;
 
-    @Column(name = "working_position")
-    private String workingPosition;
+    @Column(name = "work_position")
+    private String workPosition;
 
-    @Column(name = "additional_information")
-    private String additionalInformation;
+    @Column(name = "work_description")
+    private String workDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personel_id", nullable = false)

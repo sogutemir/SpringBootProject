@@ -15,7 +15,7 @@ public class ProjectDTO {
     private String teamName;
     private String projectTask;
     private LocalDate projectStartDate;
-    private LocalDate projectEndDate;
+    private LocalDate projectFinishDate;
     private boolean projectStatus;
 
     @NotNull
