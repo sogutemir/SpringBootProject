@@ -10,7 +10,7 @@ import org.work.personnelinfo.file.model.FileEntity;
 import org.work.personnelinfo.file.repository.FileRepository;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.personel.repository.PersonelRepository;
-import org.work.personnelinfo.resourcefile.service.ResourceFileService;
+import org.work.personnelinfo.resourceFile.service.ResourceFileService;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

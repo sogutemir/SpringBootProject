@@ -2,7 +2,7 @@ package org.work.personnelinfo.base.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.work.personnelinfo.resourcefile.model.ResourceFileEntity;
+import org.work.personnelinfo.resourceFile.model.ResourceFileEntity;
 
 @Setter
 @Getter

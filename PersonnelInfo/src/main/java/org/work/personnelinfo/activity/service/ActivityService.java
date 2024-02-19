@@ -11,7 +11,7 @@ import org.work.personnelinfo.activity.model.ActivityEntity;
 import org.work.personnelinfo.activity.repository.ActivityRepository;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.personel.repository.PersonelRepository;
-import org.work.personnelinfo.resourcefile.service.ResourceFileService;
+import org.work.personnelinfo.resourceFile.service.ResourceFileService;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

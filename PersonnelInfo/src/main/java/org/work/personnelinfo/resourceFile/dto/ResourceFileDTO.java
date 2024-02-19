@@ -1,4 +1,4 @@
-package org.work.personnelinfo.resourcefile.dto;
+package org.work.personnelinfo.resourceFile.dto;
 
 public class ResourceFileDTO {
     private byte[] data;

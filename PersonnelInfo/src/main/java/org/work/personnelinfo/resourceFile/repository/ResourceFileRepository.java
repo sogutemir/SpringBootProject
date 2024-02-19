@@ -1,9 +1,9 @@
-package org.work.personnelinfo.resourcefile.repository;
+package org.work.personnelinfo.resourceFile.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.work.personnelinfo.resourcefile.model.ResourceFileEntity;
+import org.work.personnelinfo.resourceFile.model.ResourceFileEntity;
 
 import java.util.Optional;
 

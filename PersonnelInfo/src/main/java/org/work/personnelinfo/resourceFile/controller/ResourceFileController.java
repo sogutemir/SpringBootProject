@@ -1,4 +1,4 @@
-package org.work.personnelinfo.resourcefile.controller;
+package org.work.personnelinfo.resourceFile.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.work.personnelinfo.resourcefile.dto.ResourceFileDTO;
-import org.work.personnelinfo.resourcefile.service.ResourceFileService;
-import org.work.personnelinfo.resourcefile.utility.DetermineResourceFileType;
+import org.work.personnelinfo.resourceFile.dto.ResourceFileDTO;
+import org.work.personnelinfo.resourceFile.service.ResourceFileService;
+import org.work.personnelinfo.resourceFile.utility.DetermineResourceFileType;
 
 import java.io.FileNotFoundException;
 

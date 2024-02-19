@@ -1,4 +1,4 @@
-package org.work.personnelinfo.resourcefile.service;
+package org.work.personnelinfo.resourceFile.service;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
@@ -10,10 +10,10 @@ import org.work.personnelinfo.activity.model.ActivityEntity;
 import org.work.personnelinfo.base.model.BaseEntity;
 import org.work.personnelinfo.file.model.FileEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
-import org.work.personnelinfo.resourcefile.dto.ResourceFileDTO;
-import org.work.personnelinfo.resourcefile.model.ResourceFileEntity;
-import org.work.personnelinfo.resourcefile.repository.ResourceFileRepository;
-import org.work.personnelinfo.resourcefile.utility.ResourceFileUtils;
+import org.work.personnelinfo.resourceFile.dto.ResourceFileDTO;
+import org.work.personnelinfo.resourceFile.model.ResourceFileEntity;
+import org.work.personnelinfo.resourceFile.repository.ResourceFileRepository;
+import org.work.personnelinfo.resourceFile.utility.ResourceFileUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package org.work.personnelinfo.resourcefile.utility;
+package org.work.personnelinfo.resourceFile.utility;
 
 
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,4 @@
-package org.work.personnelinfo.resourcefile.model;
+package org.work.personnelinfo.resourceFile.model;
 
 import jakarta.persistence.*;
 import lombok.*;
