@@ -6,6 +6,8 @@ import org.work.personnelinfo.activity.model.ActivityEntity;
 import org.work.personnelinfo.file.model.FileEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -27,6 +29,15 @@ public class ResourceFileEntity  {
     @Lob
     @Column(name="resource_file_Data")
     private byte[] data;
+
+
+    @Column(name = "upload_date")
+    private LocalDateTime uploadDate;
+    @PrePersist
+    protected void onCreate() {
+        uploadDate = LocalDateTime.now();
+    }
+
 
     @OneToOne(mappedBy = "resourceFile", fetch = FetchType.LAZY)
     private PersonelEntity personel;

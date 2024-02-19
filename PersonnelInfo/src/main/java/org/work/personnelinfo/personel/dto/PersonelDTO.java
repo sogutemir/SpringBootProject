@@ -20,7 +20,6 @@ public class PersonelDTO  {
     private String emergencyContact;
     private String emergencyContactPhone;
     private String residenceAddress;
-    private LocalDate employmentStartDate;
     private String registrationNo;
     private String position;
     private String title;
@@ -31,6 +30,5 @@ public class PersonelDTO  {
     private String serviceUsage;
     private String internalNumber;
     private String roomNumber;
-
 
 }

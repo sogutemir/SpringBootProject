@@ -17,7 +17,7 @@ public class ActivityDTO  {
     private String activityName;
     private String description;
     private String link;
-    private LocalDate activityDate;
+    private String eventType;
 
     @NotNull
     private Long personelId;

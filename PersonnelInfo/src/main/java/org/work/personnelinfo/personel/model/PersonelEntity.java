@@ -11,6 +11,8 @@ import org.work.personnelinfo.personel.validation.ValidTCIDNo;
 import org.work.personnelinfo.project.model.ProjectEntity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -66,9 +68,12 @@ public class PersonelEntity extends BaseEntity {
     @Column(name = "residence_address")
     private String residenceAddress;
 
-    @PastOrPresent
     @Column(name = "start_date_of_employment")
-    private LocalDate startDateOfEmployment;
+    private LocalDateTime startDateOfEmployment;
+    @PrePersist
+    protected void onCreate() {
+        startDateOfEmployment = LocalDateTime.now();
+    }
 
     @NotBlank(message = "Registration number is required")
     private String registrationNo;

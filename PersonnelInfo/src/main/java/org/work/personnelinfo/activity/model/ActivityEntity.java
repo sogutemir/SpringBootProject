@@ -7,6 +7,7 @@ import org.work.personnelinfo.base.model.BaseEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,7 +18,9 @@ import java.time.LocalDate;
 @Table(name = "personel_activity")
 public class ActivityEntity extends BaseEntity {
 
-    @NotEmpty(message = "Event type cannot be empty")
+    @NotBlank(message = "Activity name cannot be left blank")
+    private String activityName;
+
     @Size(max = 50, message = "Event type must be maximum 50 characters")
     @Column(name = "event_type")
     private String eventType;
@@ -30,7 +33,12 @@ public class ActivityEntity extends BaseEntity {
     private String link;
 
     @Column(name = "upload_date")
-    private LocalDate uploadDate;
+    private LocalDateTime uploadDate;
+    @PrePersist
+    protected void onCreate() {
+        uploadDate = LocalDateTime.now();
+    }
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "personel_id", nullable = false)

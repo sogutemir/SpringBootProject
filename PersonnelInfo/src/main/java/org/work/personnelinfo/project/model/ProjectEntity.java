@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(name = "personel_project")
 public class ProjectEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
