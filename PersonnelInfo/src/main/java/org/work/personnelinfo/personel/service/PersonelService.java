@@ -77,7 +77,7 @@ public class PersonelService {
         if (personelId == null) {
             throw new IllegalArgumentException("PersonelId cannot be null");
         }
-        
+
         PersonelEntity personelEntity = personelRepository.findById(personelId)
                 .orElseThrow(() -> new EntityNotFoundException("Personel not found with id: " + personelId));
 
