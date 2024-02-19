@@ -23,6 +23,9 @@ public class PersonelService {
 
     @Transactional(readOnly = true)
     public PersonelDTO getPersonelById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return personelRepository.findById(id)
                 .map(personelMapper::modelToDTO)
                 .orElseThrow(() -> new EntityNotFoundException("Personel not found with id: " + id));
@@ -31,7 +34,7 @@ public class PersonelService {
 
     @Transactional
     public PersonelDTO addPersonel(PersonelDTO personelDTO, MultipartFile file) throws IOException {
-        if (personelDTO == null) {
+        if (personelDTO == null ) {
             throw new IllegalArgumentException("PersonelDTO cannot be null");
         }
 
@@ -48,6 +51,10 @@ public class PersonelService {
 
     @Transactional
     public PersonelDTO updatePersonel(Long personelId, PersonelDTO personelDTO, MultipartFile file) throws IOException {
+        if (personelId == null || personelDTO == null) {
+            throw new IllegalArgumentException("PersonelId or PersonelDTO cannot be null");
+        }
+
         PersonelEntity existingPersonelEntity = personelRepository.findById(personelId)
                 .orElseThrow(() -> new EntityNotFoundException("Personel not found with id: " + personelId));
 
@@ -67,6 +74,10 @@ public class PersonelService {
 
     @Transactional
     public void deletePersonel(Long personelId) throws FileNotFoundException {
+        if (personelId == null) {
+            throw new IllegalArgumentException("PersonelId cannot be null");
+        }
+        
         PersonelEntity personelEntity = personelRepository.findById(personelId)
                 .orElseThrow(() -> new EntityNotFoundException("Personel not found with id: " + personelId));
 

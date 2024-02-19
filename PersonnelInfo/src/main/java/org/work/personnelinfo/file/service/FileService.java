@@ -14,6 +14,8 @@ import org.work.personnelinfo.resourceFile.service.ResourceFileService;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +28,29 @@ public class FileService {
 
     @Transactional(readOnly = true)
     public FileDTO getFileById(Long id){
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return fileRepository.findById(id)
                 .map(fileMapper::modelToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("File not found with id: " + id));
     }
 
+    @Transactional(readOnly = true)
+    public List<FileDTO> getFileByPersonelId(Long personelId){
+        if (personelId == null) {
+            throw new IllegalArgumentException("PersonelId cannot be null");
+        }
+        return fileRepository.findByPersonelId(personelId)
+                .stream()
+                .map(fileMapper::modelToDTO)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public FileDTO addFile(FileDTO fileDTO, MultipartFile file) throws IOException {
-        if(fileDTO == null){
-            throw new IllegalArgumentException("FileDTO cannot be null");
+        if (fileDTO == null || fileDTO.getPersonelId() == null) {
+            throw new IllegalArgumentException("EducationDTO or personelId cannot be null");
         }
         FileEntity fileEntity = fileMapper.dtoToModel(fileDTO);
 
@@ -53,6 +69,11 @@ public class FileService {
 
     @Transactional
     public FileDTO updateFile(Long fileId, FileDTO fileDTO, MultipartFile file) throws IOException {
+
+        if(fileId == null || fileDTO == null){
+            throw new IllegalArgumentException("FileId and FileDTO cannot be null");
+        }
+
         FileEntity existingFileEntity = fileRepository.findById(fileId)
                 .orElseThrow(() -> new IllegalArgumentException("File not found with id: " + fileId));
 
@@ -72,6 +93,9 @@ public class FileService {
 
     @Transactional
     public void deleteFile(Long fileId) throws FileNotFoundException {
+        if(fileId == null){
+            throw new IllegalArgumentException("FileId cannot be null");
+        }
         FileEntity fileEntity = fileRepository.findById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("File not found with id: " + fileId));
         if(fileEntity.getResourceFile() != null){

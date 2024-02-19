@@ -28,7 +28,20 @@ public class ActivityService {
     private final ActivityMapper activityMapper;
 
     @Transactional(readOnly = true)
+    public ActivityDTO getActivityById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        return activityRepository.findById(id)
+                .map(activityMapper::modelToDTO)
+                .orElseThrow(() -> new IllegalArgumentException("Activity not found with id: " + id));
+    }
+
+    @Transactional(readOnly = true)
     public List<ActivityDTO> getActivitiesByPersonelId(Long personelId) {
+        if (personelId == null) {
+            throw new IllegalArgumentException("PersonelId cannot be null");
+        }
         return activityRepository.findByPersonelId(personelId)
                 .stream()
                 .map(activityMapper::modelToDTO)
@@ -37,8 +50,8 @@ public class ActivityService {
 
     @Transactional
     public ActivityDTO addActivity(ActivityDTO activityDTO, MultipartFile file) throws IOException {
-        if (activityDTO == null) {
-            throw new IllegalArgumentException("ActivityDTO cannot be null");
+        if (activityDTO == null || activityDTO.getPersonelId() == null) {
+            throw new IllegalArgumentException("ActivityDTO or personelId cannot be null");
         }
 
         ActivityEntity activityEntity = activityMapper.dtoToModel(activityDTO);
@@ -59,6 +72,10 @@ public class ActivityService {
 
     @Transactional
     public ActivityDTO updateActivity(Long activityId, ActivityDTO activityDTO, MultipartFile file) throws IOException {
+        if (activityId == null || activityDTO == null) {
+            throw new IllegalArgumentException("ActivityId or ActivityDTO cannot be null");
+        }
+
         ActivityEntity existingActivityEntity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new EntityNotFoundException("Activity not found with id: " + activityId));
 
@@ -78,6 +95,10 @@ public class ActivityService {
 
     @Transactional
     public void deleteActivity(Long activityId) throws FileNotFoundException {
+        if (activityId == null) {
+            throw new IllegalArgumentException("ActivityId cannot be null");
+        }
+
         ActivityEntity activityEntity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new EntityNotFoundException("Activity not found with id: " + activityId));
 

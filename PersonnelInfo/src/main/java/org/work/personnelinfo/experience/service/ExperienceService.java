@@ -23,6 +23,9 @@ public class ExperienceService {
 
     @Transactional(readOnly = true)
     public ExperienceDTO getExperienceById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return experienceRepository.findById(id)
                 .map(experienceMapper::modelToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Experience not found with id: " + id));
@@ -30,16 +33,20 @@ public class ExperienceService {
 
     @Transactional(readOnly = true)
     public List<ExperienceDTO> getExperiencesByPersonelId(Long personelId) {
+        if (personelId == null) {
+            throw new IllegalArgumentException("PersonelId cannot be null");
+        }
         return experienceRepository.findByPersonelId(personelId)
                 .stream()
                 .map(experienceMapper::modelToDTO)
                 .collect(Collectors.toList());
     }
 
+
     @Transactional
     public ExperienceDTO addExperience(ExperienceDTO experienceDTO){
-        if(experienceDTO == null){
-            throw new IllegalArgumentException("ExperienceDTO cannot be null");
+        if(experienceDTO == null || experienceDTO.getPersonelId() == null){
+            throw new IllegalArgumentException("ExperienceDTO or personelId cannot be null");
         }
 
         ExperienceEntity experienceEntity = experienceMapper.dtoToModel(experienceDTO);
@@ -49,12 +56,15 @@ public class ExperienceService {
         experienceEntity.setPersonel(personelEntity);
         experienceEntity = experienceRepository.save(experienceEntity);
 
-
         return experienceMapper.modelToDTO(experienceEntity);
     }
 
     @Transactional
     public ExperienceDTO updateExperience(Long experienceId, ExperienceDTO experienceDTO){
+        if (experienceId == null || experienceDTO == null) {
+            throw new IllegalArgumentException("ExperienceId or ExperienceDTO cannot be null");
+        }
+
         ExperienceEntity existingExperienceEntity = experienceRepository.findById(experienceId)
                 .orElseThrow(() -> new IllegalArgumentException("Experience not found with id: " + experienceId));
 
@@ -65,6 +75,10 @@ public class ExperienceService {
 
     @Transactional
     public void deleteExperience(Long experienceId){
+        if (experienceId == null) {
+            throw new IllegalArgumentException("ExperienceId cannot be null");
+        }
+
         ExperienceEntity experienceEntity = experienceRepository.findById(experienceId)
                 .orElseThrow(() -> new IllegalArgumentException("Experience not found with id: " + experienceId));
         experienceRepository.delete(experienceEntity);

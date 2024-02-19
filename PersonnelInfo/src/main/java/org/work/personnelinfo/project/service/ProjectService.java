@@ -24,6 +24,9 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public ProjectDTO getProjectById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return projectRepository.findById(id)
                 .map(projectMapper::modelToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found with id: " + id));
@@ -31,6 +34,9 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public List<ProjectDTO> getProjectsByPersonelId(Long personelId) {
+        if (personelId == null) {
+            throw new IllegalArgumentException("PersonelId cannot be null");
+        }
         return projectRepository.findByPersonelId(personelId)
                 .stream()
                 .map(projectMapper::modelToDTO)
@@ -39,8 +45,8 @@ public class ProjectService {
 
     @Transactional
     public ProjectDTO addProject(ProjectDTO projectDTO) {
-        if (projectDTO == null) {
-            throw new IllegalArgumentException("ProjectDTO cannot be null");
+        if (projectDTO == null || projectDTO.getPersonelId() == null) {
+            throw new IllegalArgumentException("ProjectDTO or personelId cannot be null");
         }
 
         ProjectEntity projectEntity = projectMapper.dtoToModel(projectDTO);
@@ -55,6 +61,10 @@ public class ProjectService {
 
     @Transactional
     public ProjectDTO updateProject(Long projectId, ProjectDTO projectDTO) {
+        if (projectId == null || projectDTO == null) {
+            throw new IllegalArgumentException("ProjectId or ProjectDTO cannot be null");
+        }
+
         ProjectEntity existingProjectEntity = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found with id: " + projectId));
 
@@ -65,9 +75,12 @@ public class ProjectService {
 
     @Transactional
     public void deleteProject(Long projectId){
+        if (projectId == null) {
+            throw new IllegalArgumentException("ProjectId cannot be null");
+        }
+
         ProjectEntity projectEntity = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Experience not found with id: " + projectId));
         projectRepository.delete(projectEntity);
     }
-
 }

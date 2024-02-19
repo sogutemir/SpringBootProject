@@ -25,6 +25,9 @@ public class EducationService {
 
     @Transactional(readOnly = true)
     public EducationDTO getEducationById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return educationRepository.findById(id)
                 .map(educationMapper::modelToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Education not found with id: " + id));
@@ -32,6 +35,9 @@ public class EducationService {
 
     @Transactional(readOnly = true)
     public List<EducationDTO> getEducationsByPersonelId(Long personelId) {
+        if (personelId == null) {
+            throw new IllegalArgumentException("PersonelId cannot be null");
+        }
         return educationRepository.findByPersonelId(personelId)
                 .stream()
                 .map(educationMapper::modelToDTO)
@@ -40,8 +46,8 @@ public class EducationService {
 
     @Transactional
     public EducationDTO addEducation(EducationDTO educationDTO) {
-        if (educationDTO == null) {
-            throw new IllegalArgumentException("EducationDTO cannot be null");
+        if (educationDTO == null || educationDTO.getPersonelId() == null) {
+            throw new IllegalArgumentException("EducationDTO or personelId cannot be null");
         }
 
         EducationEntity educationEntity = educationMapper.dtoToModel(educationDTO);
@@ -56,6 +62,10 @@ public class EducationService {
 
     @Transactional
     public EducationDTO updateEducation(Long educationId, EducationDTO educationDTO) {
+        if (educationId == null || educationDTO == null) {
+            throw new IllegalArgumentException("EducationId or EducationDTO cannot be null");
+        }
+
         EducationEntity existingEducationEntity = educationRepository.findById(educationId)
                 .orElseThrow(() -> new IllegalArgumentException("Education not found with id: " + educationId));
 
@@ -66,6 +76,10 @@ public class EducationService {
 
     @Transactional
     public void deleteEducation(Long educationId){
+        if (educationId == null) {
+            throw new IllegalArgumentException("EducationId cannot be null");
+        }
+
         EducationEntity educationEntity = educationRepository.findById(educationId)
                 .orElseThrow(() -> new IllegalArgumentException("Experience not found with id: " + educationId));
         educationRepository.delete(educationEntity);
