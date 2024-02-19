@@ -9,6 +9,8 @@ import org.work.personnelinfo.activity.dto.ActivityDTO;
 import org.work.personnelinfo.activity.mapper.ActivityMapper;
 import org.work.personnelinfo.activity.model.ActivityEntity;
 import org.work.personnelinfo.activity.repository.ActivityRepository;
+import org.work.personnelinfo.personel.model.PersonelEntity;
+import org.work.personnelinfo.personel.repository.PersonelRepository;
 import org.work.personnelinfo.resourcefile.service.ResourceFileService;
 
 import java.io.FileNotFoundException;
@@ -22,6 +24,7 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final ResourceFileService resourceFileService;
+    private final PersonelRepository personelRepository;
     private final ActivityMapper activityMapper;
 
     @Transactional(readOnly = true)
@@ -39,6 +42,11 @@ public class ActivityService {
         }
 
         ActivityEntity activityEntity = activityMapper.dtoToModel(activityDTO);
+
+        PersonelEntity personelEntity = personelRepository.findById(activityDTO.getPersonelId())
+                .orElseThrow(() -> new IllegalArgumentException("Personel not found with id: " + activityDTO.getPersonelId()));
+
+        activityEntity.setPersonel(personelEntity);
 
         activityEntity = activityRepository.save(activityEntity);
 

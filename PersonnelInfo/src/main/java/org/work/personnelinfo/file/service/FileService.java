@@ -8,6 +8,8 @@ import org.work.personnelinfo.file.dto.FileDTO;
 import org.work.personnelinfo.file.mapper.FileMapper;
 import org.work.personnelinfo.file.model.FileEntity;
 import org.work.personnelinfo.file.repository.FileRepository;
+import org.work.personnelinfo.personel.model.PersonelEntity;
+import org.work.personnelinfo.personel.repository.PersonelRepository;
 import org.work.personnelinfo.resourcefile.service.ResourceFileService;
 
 import java.io.FileNotFoundException;
@@ -19,6 +21,7 @@ public class FileService {
 
     private final FileRepository fileRepository;
     private final ResourceFileService resourceFileService;
+    private final PersonelRepository personelRepository;
     private final FileMapper fileMapper;
 
     @Transactional(readOnly = true)
@@ -34,6 +37,12 @@ public class FileService {
             throw new IllegalArgumentException("FileDTO cannot be null");
         }
         FileEntity fileEntity = fileMapper.dtoToModel(fileDTO);
+
+        PersonelEntity personelEntity = personelRepository.findById(fileDTO.getPersonelId())
+                .orElseThrow(() -> new IllegalArgumentException("Personel not found with id: " + fileDTO.getPersonelId()));
+
+        fileEntity.setPersonel(personelEntity);
+
         fileEntity = fileRepository.save(fileEntity);
 
         if(file != null && !file.isEmpty()){
