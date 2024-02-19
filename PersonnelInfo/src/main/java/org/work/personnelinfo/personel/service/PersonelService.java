@@ -2,7 +2,6 @@ package org.work.personnelinfo.personel.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,10 +10,8 @@ import org.work.personnelinfo.personel.mapper.PersonelMapper;
 import org.work.personnelinfo.personel.repository.PersonelRepository;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.resourcefile.service.ResourceFileService;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
