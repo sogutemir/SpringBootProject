@@ -3,7 +3,6 @@ package org.work.personnelinfo.project.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.work.personnelinfo.experience.model.ExperienceEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.personel.repository.PersonelRepository;
 import org.work.personnelinfo.project.dto.ProjectDTO;

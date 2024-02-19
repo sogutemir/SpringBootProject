@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
-import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.project.dto.ProjectDTO;
 import org.work.personnelinfo.project.model.ProjectEntity;
 

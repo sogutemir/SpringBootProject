@@ -2,7 +2,6 @@ package org.work.personnelinfo.activity.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
 
 
 import lombok.*;

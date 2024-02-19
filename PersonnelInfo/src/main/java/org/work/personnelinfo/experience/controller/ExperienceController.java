@@ -1,7 +1,6 @@
 package org.work.personnelinfo.experience.controller;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +63,18 @@ public class ExperienceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating staff: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{experienceId}")
+    public ResponseEntity<?> deleteExperience(@PathVariable Long experienceId) {
+        try {
+            experienceService.deleteExperience(experienceId);
+            return new ResponseEntity<>("Experience deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting staff: " + e.getMessage());
         }
     }
 

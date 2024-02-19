@@ -7,7 +7,6 @@ import org.work.personnelinfo.education.dto.EducationDTO;
 import org.work.personnelinfo.education.mapper.EducationMapper;
 import org.work.personnelinfo.education.model.EducationEntity;
 import org.work.personnelinfo.education.repository.EducationRepository;
-import org.work.personnelinfo.experience.model.ExperienceEntity;
 import org.work.personnelinfo.personel.model.PersonelEntity;
 import org.work.personnelinfo.personel.repository.PersonelRepository;
 
