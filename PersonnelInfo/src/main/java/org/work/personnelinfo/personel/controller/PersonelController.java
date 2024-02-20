@@ -2,6 +2,8 @@ package org.work.personnelinfo.personel.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.work.personnelinfo.personel.service.PersonelService;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,8 @@ public class PersonelController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping("/admin/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addPersonel(@RequestParam(value = "file", required = false) MultipartFile file,
                                          @ModelAttribute PersonelDTO personelDTO) {
         try {
@@ -44,7 +47,6 @@ public class PersonelController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while adding staff: " + e.getMessage());
         }
     }
-
     @PutMapping("/update/{personelId}")
     public ResponseEntity<?> updatePersonel(@PathVariable Long personelId,
                                             @RequestParam(value = "file", required = false) MultipartFile file,
