@@ -20,6 +20,7 @@ import java.io.IOException;
 public class UserController {
 
     private final AuthenticationService authenticationService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDTO entity){
         String token = authenticationService.login(entity);

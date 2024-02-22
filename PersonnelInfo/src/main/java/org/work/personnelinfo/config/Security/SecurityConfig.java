@@ -19,7 +19,7 @@ import org.work.personnelinfo.admin.Service.UserService;
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
-    private final UserService userService; // Assume this needs to be lazily loaded
+    private final UserService userService;
 
     public SecurityConfig(JwtUtil jwtUtil, @Lazy UserService userService) {
         this.jwtUtil = jwtUtil;

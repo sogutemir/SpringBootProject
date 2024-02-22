@@ -20,6 +20,7 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+
     public String login(UserDTO entity){
         UserEntity account = userRepository.findByUsername(entity.getUsername());
         if (account != null && passwordEncoder.matches(entity.getPassword(), account.getPassword())) {
